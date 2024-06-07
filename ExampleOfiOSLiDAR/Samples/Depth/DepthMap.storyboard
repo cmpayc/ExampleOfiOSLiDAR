@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W4n-A3-q10">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W4n-A3-q10">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,38 +21,64 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <arView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xFg-wj-2Ut">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                            </arView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OOr-Xm-bJ8">
-                                <rect key="frame" x="50" y="103" width="314" height="700"/>
+                            <arscnView multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IDY-ha-V3P">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </arscnView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OOr-Xm-bJ8">
+                                <rect key="frame" x="50" y="105" width="314" height="700"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="700" id="aow-mc-PnD"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="b6G-ug-XS1">
+                                <rect key="frame" x="-21" y="41" width="121" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="&lt; BACK"/>
+                                <connections>
+                                    <action selector="tappedBackButton:" destination="W4n-A3-q10" eventType="touchUpInside" id="0m3-lr-Lxu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erZ-S2-RCW" userLabel="Show Depth Button">
+                                <rect key="frame" x="279" y="35" width="135" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Show Depth"/>
+                                <connections>
+                                    <action selector="tappedShowDepthButton:" destination="W4n-A3-q10" eventType="touchUpInside" id="eRI-ut-jwN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nY9-xY-eJN">
+                                <rect key="frame" x="130" y="800" width="154" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="RECORD"/>
+                                <connections>
+                                    <action selector="startRecord:" destination="W4n-A3-q10" eventType="touchUpInside" id="bwx-gF-c0M"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8DE-zZ-g0N"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="OOr-Xm-bJ8" firstAttribute="centerY" secondItem="xFg-wj-2Ut" secondAttribute="centerY" id="0nv-VF-bwT"/>
-                            <constraint firstItem="rfY-ck-SDk" firstAttribute="top" secondItem="xFg-wj-2Ut" secondAttribute="bottom" id="9L2-dD-6t6"/>
-                            <constraint firstAttribute="trailing" secondItem="xFg-wj-2Ut" secondAttribute="trailing" id="9R5-bY-49Q"/>
                             <constraint firstItem="OOr-Xm-bJ8" firstAttribute="leading" secondItem="fgl-um-TyF" secondAttribute="leading" constant="50" id="Chb-dB-mHv"/>
                             <constraint firstAttribute="trailing" secondItem="OOr-Xm-bJ8" secondAttribute="trailing" constant="50" id="XZh-Ww-DRA"/>
-                            <constraint firstItem="xFg-wj-2Ut" firstAttribute="top" secondItem="hUZ-jj-glX" secondAttribute="bottom" id="e9P-49-poh"/>
-                            <constraint firstItem="xFg-wj-2Ut" firstAttribute="leading" secondItem="fgl-um-TyF" secondAttribute="leading" id="uCk-W2-RCT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="q2X-I5-NNA"/>
                     <connections>
-                        <outlet property="arView" destination="xFg-wj-2Ut" id="kcs-Rm-F3g"/>
+                        <outlet property="arView" destination="IDY-ha-V3P" id="tf2-oK-CsN"/>
+                        <outlet property="backButton" destination="b6G-ug-XS1" id="RVI-F1-qHl"/>
                         <outlet property="imageView" destination="OOr-Xm-bJ8" id="U0z-LO-MT6"/>
                         <outlet property="imageViewHeight" destination="aow-mc-PnD" id="ILO-uj-gSX"/>
+                        <outlet property="recordButton" destination="nY9-xY-eJN" id="RGf-A5-fiL"/>
+                        <outlet property="showDepthButton" destination="erZ-S2-RCW" id="3gq-Ui-Fzm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Vd-tT-k9R" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1010" y="-328"/>
+            <point key="canvasLocation" x="1008.6956521739131" y="-328.125"/>
         </scene>
     </scenes>
     <resources>

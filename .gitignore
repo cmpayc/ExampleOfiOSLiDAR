@@ -121,4 +121,6 @@ DerivedData/
 ## Gcc Patch
 /*.gcno
 
+Pods
+.DS_Store
 

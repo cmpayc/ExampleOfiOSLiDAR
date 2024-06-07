@@ -1,0 +1,21 @@
+PODS:
+  - ARCapture (0.2.1)
+
+DEPENDENCIES:
+  - ARCapture (from `https://github.com/cmpayc/arcapture-depth.git`)
+
+EXTERNAL SOURCES:
+  ARCapture:
+    :git: https://github.com/cmpayc/arcapture-depth.git
+
+CHECKOUT OPTIONS:
+  ARCapture:
+    :commit: 08281a5a8519e559518227e7c0967f94fffaf7da
+    :git: https://github.com/cmpayc/arcapture-depth.git
+
+SPEC CHECKSUMS:
+  ARCapture: 9abd83b65f231aee2fb6013108e4f1bd30ffb5b4
+
+PODFILE CHECKSUM: 250718b9da3ff5141166556f3f11a3343f7b44e5
+
+COCOAPODS: 1.14.2

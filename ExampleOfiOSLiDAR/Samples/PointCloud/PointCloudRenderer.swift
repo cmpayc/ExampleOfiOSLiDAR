@@ -179,8 +179,10 @@ class PointCloudRenderer {
                 return 90
             case .portraitUpsideDown:
                 return -90
+            case .portraitUpsideDown:
+                return -90
             default:
-                return 0
+                return 90
             }
         }
         let flipYZ = matrix_float4x4(
