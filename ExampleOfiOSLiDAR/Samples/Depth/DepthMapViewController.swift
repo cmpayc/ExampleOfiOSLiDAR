@@ -92,13 +92,19 @@ class DepthMapViewController: UIViewController, ARSessionDelegate {
         super.viewDidLayoutSubviews()
         infoLabel.frame = CGRect(x: 0, y: 150, width: view.bounds.width, height: 64)
         if (orientation.isLandscape) {
-            let width = CGFloat(Int(view.bounds.width * (192 / view.bounds.height)))
+            //let width = CGFloat(Int(view.bounds.width * (192 / view.bounds.height)))
+            let width = CGFloat(Int(view.bounds.height * (256 / 192)))
             arView.frame = CGRect(x: (view.bounds.width - width) / 2, y: 0, width: width, height: view.bounds.height)
             imageView.frame = CGRect(x: (view.bounds.width - width) / 2, y: 0, width: width, height: view.bounds.height)
+            //arView.frame = CGRect(x: (view.bounds.width - 768) / 2, y: 0, width: 768, height: 576);
+            //imageView.frame = CGRect(x: (view.bounds.width - 768) / 2, y: 0, width: 768, height: 576);
         } else {
-            let height = CGFloat(Int(view.bounds.height * (256 / view.bounds.width)))
+            //let height = CGFloat(Int(view.bounds.height * (256 / view.bounds.width)))
+            let height = CGFloat(Int(view.bounds.width / (256 / 192)))
             arView.frame = CGRect(x: 0, y: (view.bounds.height - height) / 2, width: view.bounds.width, height: height)
             imageView.frame = CGRect(x: 0, y: (view.bounds.height - height) / 2, width: view.bounds.width, height: height)
+            //arView.frame = CGRect(x: 0, y: 0, width: 576, height: 768)
+            //imageView.frame = CGRect(x: 0, y: (view.bounds.height - height) / 2, width: 576, height: 768)
         }
     }
 
