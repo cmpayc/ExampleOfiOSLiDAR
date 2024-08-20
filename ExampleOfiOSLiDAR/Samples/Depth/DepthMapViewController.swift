@@ -164,7 +164,7 @@ class DepthMapViewController: UIViewController, ARSessionDelegate {
             sender.setTitleColor(.blue, for: .normal)
             recordStarted = false
         } else {
-            capture?.start(captureType: ARFrameGenerator.CaptureType.renderOriginal, captureDepth: ARFrameGenerator.CaptureDepth.smooth)
+            capture?.start(captureType: ARFrameGenerator.CaptureType.renderOriginal, captureDepth: ARFrameGenerator.CaptureDepth.yes)
             sender.setTitle("STOP", for: .normal)
             sender.setTitleColor(.red, for: .normal)
             recordStarted = true
