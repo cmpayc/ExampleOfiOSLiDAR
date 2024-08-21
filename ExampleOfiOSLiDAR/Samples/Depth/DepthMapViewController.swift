@@ -3,7 +3,7 @@
 //  ExampleOfiOSLiDAR
 //
 //  Created by TokyoYoshida on 2021/01/07.
-//  Modified by Sergei Kazakov on 2024/06/07
+//  Modified by Sergei Kazakov on 2024/08/21
 //
 
 import RealityKit
@@ -92,19 +92,13 @@ class DepthMapViewController: UIViewController, ARSessionDelegate {
         super.viewDidLayoutSubviews()
         infoLabel.frame = CGRect(x: 0, y: 150, width: view.bounds.width, height: 64)
         if (orientation.isLandscape) {
-            //let width = CGFloat(Int(view.bounds.width * (192 / view.bounds.height)))
             let width = CGFloat(Int(view.bounds.height * (256 / 192)))
             arView.frame = CGRect(x: (view.bounds.width - width) / 2, y: 0, width: width, height: view.bounds.height)
             imageView.frame = CGRect(x: (view.bounds.width - width) / 2, y: 0, width: width, height: view.bounds.height)
-            //arView.frame = CGRect(x: (view.bounds.width - 768) / 2, y: 0, width: 768, height: 576);
-            //imageView.frame = CGRect(x: (view.bounds.width - 768) / 2, y: 0, width: 768, height: 576);
         } else {
-            //let height = CGFloat(Int(view.bounds.height * (256 / view.bounds.width)))
-            let height = CGFloat(Int(view.bounds.width / (256 / 192)))
+            let height = CGFloat(Int(view.bounds.width / (192 / 256)))
             arView.frame = CGRect(x: 0, y: (view.bounds.height - height) / 2, width: view.bounds.width, height: height)
             imageView.frame = CGRect(x: 0, y: (view.bounds.height - height) / 2, width: view.bounds.width, height: height)
-            //arView.frame = CGRect(x: 0, y: 0, width: 576, height: 768)
-            //imageView.frame = CGRect(x: 0, y: (view.bounds.height - height) / 2, width: 576, height: 768)
         }
     }
 
@@ -220,165 +214,5 @@ extension CVPixelBuffer {
         default:
             return nil
         }
-    }
-    
-    func toFlatArray() -> [Float] {
-        var depthArray = [Float]()
-        let pixelSize = self.pixelSize
-        guard pixelSize.x > 0 && pixelSize.y > 0 else { return depthArray }
-        guard CVPixelBufferLockBaseAddress(self, .readOnly) == noErr else { return depthArray }
-        guard let data = data else { return depthArray }
-        defer { CVPixelBufferUnlockBaseAddress(self, .readOnly) }
-        for y in stride(from: 1, to: pixelSize.y + 1, by: 1) {
-            for x in stride(from: 1, to: pixelSize.x + 1, by: 1) {
-                let pix = simd_float2(Float(x), Float(y))
-                let clamped = clamp(simd_int2(pix), min: .zero, max: pixelSize &- simd_int2(1,1))
-                let bytesPerRow = CVPixelBufferGetBytesPerRow(self)
-                let row = Int(clamped.y)
-                let column = Int(clamped.x)
-                let rowPtr = data.baseAddress! + row * bytesPerRow
-                switch CVPixelBufferGetPixelFormatType(self) {
-                case kCVPixelFormatType_DepthFloat32:
-                    // Bind the row to the right type
-                    let typed = rowPtr.assumingMemoryBound(to: Float.self)
-                    depthArray.append(typed[column])
-                case kCVPixelFormatType_32BGRA:
-                    // Bind the row to the right type
-                    let typed = rowPtr.assumingMemoryBound(to: UInt8.self)
-                    depthArray.append(Float(typed[column]) / Float(UInt8.max))
-                default:
-                    depthArray.append(0)
-                }
-            }
-        }
-        
-        return depthArray
-    }
-    
-    func toFlatArray2() -> Data {
-        //var depthArray = [Float]()
-        var depthArray = Data()
-        let pixelSize = self.pixelSize
-        guard pixelSize.x > 0 && pixelSize.y > 0 else { return depthArray }
-        guard CVPixelBufferLockBaseAddress(self, .readOnly) == noErr else { return depthArray }
-        guard let data = data else { return depthArray }
-        defer { CVPixelBufferUnlockBaseAddress(self, .readOnly) }
-        for y in stride(from: 1, to: pixelSize.y, by: 1) {
-            for x in stride(from: 1, to: pixelSize.x, by: 1) {
-                let pix = simd_float2(Float(x), Float(y))
-                let clamped = clamp(simd_int2(pix), min: .zero, max: pixelSize &- simd_int2(1,1))
-                let bytesPerRow = CVPixelBufferGetBytesPerRow(self)
-                let row = Int(clamped.y)
-                let column = Int(clamped.x)
-                let rowPtr = data.baseAddress! + row * bytesPerRow
-                switch CVPixelBufferGetPixelFormatType(self) {
-                case kCVPixelFormatType_DepthFloat32:
-                    // Bind the row to the right type
-                    let typed = rowPtr.assumingMemoryBound(to: Float.self)
-                    var float: Float = typed[column]
-                    let dataVal = Data(bytes: &float, count: 4)
-                    depthArray.append(dataVal)
-                case kCVPixelFormatType_32BGRA:
-                    // Bind the row to the right type
-                    let typed = rowPtr.assumingMemoryBound(to: UInt8.self)
-                    var float: Float = Float(typed[column]) / Float(UInt8.max)
-                    let dataVal = Data(bytes: &float, count: 4)
-                    depthArray.append(dataVal)
-                default:
-                    var float: Float = 0
-                    let dataVal = Data(bytes: &float, count: 4)
-                    depthArray.append(dataVal)
-                }
-            }
-        }
-        
-        return depthArray
-    }
-
-    func toArray() -> [[Float]] {
-        var depthArray = [[Float]]()
-        let pixelSize = self.pixelSize
-        guard pixelSize.x > 0 && pixelSize.y > 0 else { return depthArray }
-        guard CVPixelBufferLockBaseAddress(self, .readOnly) == noErr else { return depthArray }
-        guard let data = data else { return depthArray }
-        defer { CVPixelBufferUnlockBaseAddress(self, .readOnly) }
-        for y in stride(from: 1, to: pixelSize.y, by: 1) {
-            var depthArrayLine = [Float]()
-            for x in stride(from: 1, to: pixelSize.x, by: 1) {
-                let pix = simd_float2(Float(x), Float(y))
-                let clamped = clamp(simd_int2(pix), min: .zero, max: pixelSize &- simd_int2(1,1))
-                let bytesPerRow = CVPixelBufferGetBytesPerRow(self)
-                let row = Int(clamped.y)
-                let column = Int(clamped.x)
-                let rowPtr = data.baseAddress! + row * bytesPerRow
-                switch CVPixelBufferGetPixelFormatType(self) {
-                case kCVPixelFormatType_DepthFloat32:
-                    // Bind the row to the right type
-                    let typed = rowPtr.assumingMemoryBound(to: Float.self)
-                    depthArrayLine.append(typed[column])
-                case kCVPixelFormatType_32BGRA:
-                    // Bind the row to the right type
-                    let typed = rowPtr.assumingMemoryBound(to: UInt8.self)
-                    depthArrayLine.append(Float(typed[column]) / Float(UInt8.max))
-                default:
-                    depthArrayLine.append(0)
-                }
-            }
-            depthArray.append(depthArrayLine)
-        }
-        
-        return depthArray
-    }
-}
-
-extension UIImage {
-    
-    /// Get buffer with pixels from image
-    /// - Parameters:
-    ///   - angle: the angle to apply
-    ///   - originalSize: the original size
-    public func getBuffer(angle: CGFloat?, originalSize: CGSize) -> CVPixelBuffer? {
-        let size = self.size
-        var buff: CVPixelBuffer?
-        let res = CVPixelBufferCreate(kCFAllocatorDefault,
-                                      Int(size.width),
-                                      Int(size.height),
-                                      kCVPixelFormatType_32ARGB,
-                                      [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
-                                       kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary,
-                                      &buff)
-        guard res == kCVReturnSuccess else { return nil }
-        
-        CVPixelBufferLockBaseAddress(buff!, CVPixelBufferLockFlags(rawValue: 0))
-        
-        guard let c = CGContext(data: CVPixelBufferGetBaseAddress(buff!),
-                                width: Int(size.width),
-                                height: Int(size.height),
-                                bitsPerComponent: 8,
-                                bytesPerRow: CVPixelBufferGetBytesPerRow(buff!),
-                                space: CGColorSpaceCreateDeviceRGB(),
-                                bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue) else { return nil}
-        
-        if let angle = angle {
-            c.rotate(by: angle)
-            c.translateBy(x: 0, y: 0)
-        }
-        else {
-            c.translateBy(x: 0, y: size.height)
-        }
-        c.scaleBy(x: 1.0, y: -1.0)
-        
-        UIGraphicsPushContext(c)
-        self.draw(in: CGRect(x: 0, y: 0, width: originalSize.width, height: originalSize.height))
-        UIGraphicsPopContext()
-        CVPixelBufferUnlockBaseAddress(buff!, CVPixelBufferLockFlags(rawValue: 0))
-        return buff
-    }
-    
-    static func emptyImage(with size: CGSize) -> UIImage? {
-        UIGraphicsBeginImageContext(size)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
     }
 }
